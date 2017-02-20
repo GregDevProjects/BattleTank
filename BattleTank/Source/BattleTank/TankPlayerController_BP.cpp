@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "BattleTank.h"
 #include "TankPlayerController_BP.h"
+
 
 // Tick 
 	//Super
@@ -40,7 +42,8 @@ void ATankPlayerController_BP::AimTowardsCrosshair()
 	//Get world location if linetrace through crosshair 
 	if (GetSightRayHitLocation(HitLocation)) { //is going to ray trace 
 		// If it hits the landscape tell controlled tank to aim at this point
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation %s"), *HitLocation.ToString());
+		GetControlledTank()->AimAT(HitLocation);
+		//UE_LOG(LogTemp, Warning, TEXT("HitLocation %s"), *HitLocation.ToString());
 	}
 }
 
