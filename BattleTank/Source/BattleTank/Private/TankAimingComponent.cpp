@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
+#include "TurretCustomMesh.h"
 #include "TankAimingComponent.h"
 #include "../Public/TankAimingComponent.h"
 
@@ -20,6 +21,11 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::SetTurretReference(UTurretCustomMesh *TurretToSet)
+{
+	TurretCustomMesh = TurretToSet;
 }
 
 // Called when the game starts
@@ -44,7 +50,8 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 {
 
 	if (!Barrel) { return; }
-	
+	MoveTurretTowards(HitLocation);
+	float Time = GetWorld()->GetTimeSeconds();
 	FVector OutLaunchVelocity;
 	//if aim solution is found
 	if (UGameplayStatics::SuggestProjectileVelocity
@@ -54,6 +61,9 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 			Barrel->GetSocketLocation(FName("Projectile")),
 			HitLocation,
 			LaunchSpeed,
+			false,
+			0,
+			0,
 			ESuggestProjVelocityTraceOption::DoNotTrace
 		)
 	) 
@@ -61,8 +71,14 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 		//rotate barrel towards hit location 
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
+		
 	//	UE_LOG(LogTemp, Warning, TEXT("Speed %s"), *AimDirection.ToString());
 		//UE_LOG(LogTemp, Warning, TEXT("aim loc %s"), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("elevate called %f"), Time);
+	} else {
+		
+		//UE_LOG(LogTemp, Warning, TEXT("elevate called"));
+		//UE_LOG(LogTemp, Warning, TEXT("elevate NOT called %f"), Time);
 	}
 	
 	
@@ -72,14 +88,34 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	
 	//work out difference between current barrel rotation and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-
-	Barrel->Elevate(5);//TODO remove magic number
-
+	//UE_LOG(LogTemp, Warning, TEXT("Aim %f"), DeltaRotator.Roll);
+	Barrel->Elevate(DeltaRotator.Pitch);//TODO remove magic number
+	TurretCustomMesh->Rotate(DeltaRotator.Yaw);
+	//TurretCustomMesh->Rotate(AimAsRotator.Roll);
 	//move barrel right amount each frame 
 	//Given max elevation speed and the frame time
 }
 
+//TODO clean this up
+void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+{
+
+	//work out difference between current barrel rotation and AimDirection
+	auto BarrelRotator = TurretCustomMesh->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	//UE_LOG(LogTemp, Warning, TEXT("Aim %s"), *AimAsRotator.ToString());
+
+
+	//TurretCustomMesh->Rotate(AimAsRotator.Yaw);
+
+
+
+	//move barrel right amount each frame 
+	//Given max elevation speed and the frame time
+}

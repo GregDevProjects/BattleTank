@@ -8,6 +8,7 @@
 
 //forward declaration 
 class UTankBarrel; 
+class UTurretCustomMesh;
 
 //Hold barral's properties 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -21,6 +22,8 @@ public:
 
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
+	void SetTurretReference(UTurretCustomMesh*);
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
@@ -33,6 +36,8 @@ public:
 
 private:
 	UTankBarrel* Barrel = nullptr;
+	UTurretCustomMesh* TurretCustomMesh = nullptr;
 	void MoveBarrelTowards(FVector AimDirection);
+	void MoveTurretTowards(FVector AimDirection);
 	
 };

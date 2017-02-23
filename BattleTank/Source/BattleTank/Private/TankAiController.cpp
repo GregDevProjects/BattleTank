@@ -3,11 +3,11 @@
 #include "BattleTank.h"
 #include "TankAiController.h"
 #include "../Public/TankAiController.h"
-
+#include "Tank.h"
 
 void ATankAiController::BeginPlay() {
 	Super::BeginPlay();
-
+	
 	auto TankController = GetControlledTank();
 	auto PlayerInTank = GetPlayerTank();
 
