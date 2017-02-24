@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetTurretReference(UTurretCustomMesh* TurretToSet);
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void FireTank();
+
 
 private:
 	// Sets default values for this pawn's properties

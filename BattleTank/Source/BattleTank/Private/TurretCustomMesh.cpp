@@ -11,9 +11,9 @@ void UTurretCustomMesh::Rotate(float RotationDirection) {
 
 	RotationDirection = FMath::Clamp<float>(RotationDirection, -1, 1);
 
-	auto ElevationChange = RotationDirection * MaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
-	auto RawNewElevation = RelativeRotation.Yaw + ElevationChange;
-	UE_LOG(LogTemp, Warning, TEXT("RotateCalled ElevationChange: %f RawNewElevation: %f"), RawNewElevation, RawNewElevation);
+	auto RotationChange = RotationDirection * MaxDegreesPerSecond * GetWorld()->DeltaTimeSeconds;
+	auto RawNewElevation = RelativeRotation.Yaw + RotationChange;
+	//UE_LOG(LogTemp, Warning, TEXT("RotateCalled ElevationChange: %f RawNewElevation: %f"), RawNewElevation, RawNewElevation);
 	//RawNewElevation = FMath::Clamp<float>(RawNewElevation, MinElevation, MaxElevation);
 	SetRelativeRotation(FRotator(0, RawNewElevation, 0));
 

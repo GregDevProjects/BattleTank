@@ -38,6 +38,6 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTurretCustomMesh* TurretCustomMesh = nullptr;
 	void MoveBarrelTowards(FVector AimDirection);
-	void MoveTurretTowards(FVector AimDirection);
+
 	
 };

@@ -54,3 +54,8 @@ void ATank::SetTurretReference(UTurretCustomMesh* TurretToSet)
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
+
+void ATank::FireTank()
+{
+	UE_LOG(LogTemp, Warning, TEXT("FirePressed") );
+}

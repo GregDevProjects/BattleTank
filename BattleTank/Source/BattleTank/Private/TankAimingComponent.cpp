@@ -12,7 +12,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -50,7 +50,7 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 {
 
 	if (!Barrel) { return; }
-	MoveTurretTowards(HitLocation);
+
 	float Time = GetWorld()->GetTimeSeconds();
 	FVector OutLaunchVelocity;
 	//if aim solution is found
@@ -93,29 +93,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT("Aim %f"), DeltaRotator.Roll);
-	Barrel->Elevate(DeltaRotator.Pitch);//TODO remove magic number
+	//move barrel right amount each frame 
+	//Given max elevation speed and the frame time
+	Barrel->Elevate(DeltaRotator.Pitch);
 	TurretCustomMesh->Rotate(DeltaRotator.Yaw);
-	//TurretCustomMesh->Rotate(AimAsRotator.Roll);
-	//move barrel right amount each frame 
-	//Given max elevation speed and the frame time
+
+
 }
 
-//TODO clean this up
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-{
-
-	//work out difference between current barrel rotation and AimDirection
-	auto BarrelRotator = TurretCustomMesh->GetForwardVector().Rotation();
-	FRotator AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT("Aim %s"), *AimAsRotator.ToString());
-
-
-	//TurretCustomMesh->Rotate(AimAsRotator.Yaw);
-
-
-
-	//move barrel right amount each frame 
-	//Given max elevation speed and the frame time
-}
