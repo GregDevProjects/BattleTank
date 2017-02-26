@@ -97,7 +97,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	//Given max elevation speed and the frame time
 	Barrel->Elevate(DeltaRotator.Pitch);
 	TurretCustomMesh->Rotate(DeltaRotator.Yaw);
-
+	
 
 }
 

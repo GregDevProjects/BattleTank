@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankAimingComponent;
 class UTurretCustomMesh;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -28,6 +29,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void FireTank();
 
+	
+
 
 private:
 	// Sets default values for this pawn's properties
@@ -44,4 +47,14 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LanuchSpeed = 1000000.f; //TODO find sensible default
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileBluePrint;
+
+	UTankBarrel* Barrel = nullptr;
+
+	float ReloadTimeSeconds = 3;
+
+	double LastFireTime = 0;
+	
 };

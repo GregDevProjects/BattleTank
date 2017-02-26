@@ -7,7 +7,6 @@
 
 
 void UTurretCustomMesh::Rotate(float RotationDirection) {
-	
 
 	RotationDirection = FMath::Clamp<float>(RotationDirection, -1, 1);
 
