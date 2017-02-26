@@ -29,7 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void FireTank();
 
-	
 
 
 private:
@@ -51,9 +50,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 		TSubclassOf<AProjectile> ProjectileBluePrint;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float ReloadTimeSeconds = 3;
+
 	UTankBarrel* Barrel = nullptr;
 
-	float ReloadTimeSeconds = 3;
+
 
 	double LastFireTime = 0;
 	
