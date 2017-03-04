@@ -10,6 +10,7 @@ class UTankBarrel;
 class UTankAimingComponent;
 class UTurretCustomMesh;
 class AProjectile;
+class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -29,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void FireTank();
 
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent* TankMovementComponent;
 
 
 private:

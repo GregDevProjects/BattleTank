@@ -17,11 +17,15 @@ void ATankAiController::Tick(float DeltaSeconds)
 	auto ThisTank = Cast<ATank>(GetPawn());
 	if (PlayerTank) {
 		//Move towards player
+		MoveToActor(
+			PlayerTank,
+			AcceptanceRadius
+		);
 		//Aim towards player
 		ThisTank->AimAT(PlayerTank->GetActorLocation());
 		
 
-		ThisTank->FireTank();
+		//ThisTank->FireTank();
 	}
 }
 
