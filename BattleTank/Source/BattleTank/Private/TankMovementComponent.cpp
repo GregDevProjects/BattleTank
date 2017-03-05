@@ -37,5 +37,5 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	IntendMoveForward(DifferenceBetweenThisTankAndPlayerForard);
 	float DifferenceBetweenThisTankAndPlayerRotation = FVector::CrossProduct( TankForward, AIForwardIntention).Z;
 	IntendTurnRight(DifferenceBetweenThisTankAndPlayerRotation);
-	UE_LOG(LogTemp, Error, TEXT("MoveVelocity: %s, ForwardVector: %s"), *TankForward.ToString(), *GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().ToString() );
+	//UE_LOG(LogTemp, Error, TEXT("MoveVelocity: %s, ForwardVector: %s"), *TankForward.ToString(), *GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().ToString() );
 }

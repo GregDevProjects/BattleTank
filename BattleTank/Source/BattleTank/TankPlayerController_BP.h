@@ -21,11 +21,14 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		ATank* GetControlledTank() const;
+
 
 
 private:
 	APawn* TankController;
-	ATank* GetControlledTank() const;
 	void AimTowardsCrosshair();
 	//@return true if hit landscape 
 	//@OUT FVector
@@ -37,7 +40,9 @@ private:
 	bool GetLookDirection(FVector2D, FVector&, FVector&) const;
 
 	UPROPERTY(EditAnywhere)
-		float LineTraceRange = 1000000.0f;
+		float LineTraceRange = 1000000.0f;	
+
+
 
 	bool GetLookVectorHitLocation(FVector, FVector&) const;
 };

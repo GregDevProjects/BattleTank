@@ -6,9 +6,19 @@
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
+UENUM()
+enum class EfiringStatus : uint8
+{
+	Locked,
+	Aiming,
+	Reloading
+};
+
 //forward declaration 
 class UTankBarrel; 
 class UTurretCustomMesh;
+
+
 
 //Hold barral's properties 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -32,7 +42,9 @@ public:
 
 	void AimAT(FVector HitLocation, float LaunchSpeed);
 
-	
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+		EfiringStatus FiringStatus = EfiringStatus::Reloading;
 
 private:
 	UTankBarrel* Barrel = nullptr;

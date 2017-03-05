@@ -19,7 +19,7 @@ class BATTLETANK_API ATank : public APawn
 
 public:
 	void AimAT(FVector HitLocation);
-	UTankAimingComponent* TankAimingComponent = nullptr;
+
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
@@ -32,8 +32,10 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovementComponent;
+	UTankMovementComponent* TankMovementComponent = nullptr;
 
+	UPROPERTY(BlueprintReadOnly)
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
@@ -59,8 +61,5 @@ private:
 
 	UTankBarrel* Barrel = nullptr;
 
-
-
-	double LastFireTime = 0;
-	
+	double LastFireTime = 0;	
 };
