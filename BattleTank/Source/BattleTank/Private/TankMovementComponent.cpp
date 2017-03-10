@@ -6,22 +6,21 @@
 #include "../Public/TankMovementComponent.h"
 
 
-
 void UTankMovementComponent::IntendMoveForward(float Throw) {
-	if (!LeftTrack || !RightTrack) return;
+	if (!ensure(LeftTrack && RightTrack)) return;
 	LeftTrack->SetTrottle(Throw);
 	RightTrack->SetTrottle(Throw);
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw) {
-	if (!LeftTrack || !RightTrack) return;
+	if (!ensure(LeftTrack && RightTrack)) return;
 	//UE_LOG(LogTemp, Error, TEXT("Passed To Turn Right: %f"), Throw);
 	LeftTrack->SetTrottle(Throw);
 	RightTrack->SetTrottle(-Throw);
 }
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet) {
-	if (!LeftTrackToSet || !RightTrackToSet) { UE_LOG(LogTemp, Error, TEXT("NO TRACK")); return; }
+	if (!ensure(LeftTrackToSet && RightTrackToSet)) { UE_LOG(LogTemp, Error, TEXT("NO TRACK")); return; }
 	LeftTrack = LeftTrackToSet;
 	RightTrack = RightTrackToSet;
 	if (!RightTrack) { UE_LOG(LogTemp, Error, TEXT("SUCCESS INITIALIZWE")); }

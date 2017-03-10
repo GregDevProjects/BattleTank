@@ -4,6 +4,7 @@
 #include "TankBarrel.h"
 #include "TurretCustomMesh.h"
 #include "TankAimingComponent.h"
+#include "Projectile.h"
 #include "../Public/TankAimingComponent.h"
 
 
@@ -17,17 +18,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTurretCustomMesh *TurretToSet)
-{
-	TurretCustomMesh = TurretToSet;
-}
-
 // Called when the game starts
 void UTankAimingComponent::BeginPlay()
 {
@@ -39,17 +29,17 @@ void UTankAimingComponent::BeginPlay()
 
 
 // Called every frame
-void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
 	// ...
 }
 
-void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
+void UTankAimingComponent::AimAT(FVector HitLocation)
 {
 
-	if (!Barrel) { return; }
+	if (!ensure(Barrel)) { return; }
 
 	float Time = GetWorld()->GetTimeSeconds();
 	FVector OutLaunchVelocity;
@@ -60,7 +50,7 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 			OutLaunchVelocity,
 			Barrel->GetSocketLocation(FName("Projectile")),
 			HitLocation,
-			LaunchSpeed,
+			LanuchSpeed,
 			false,
 			0,
 			0,
@@ -86,9 +76,18 @@ void UTankAimingComponent::AimAT(FVector HitLocation, float LaunchSpeed)
 
 }
 
+void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTurretCustomMesh * TurretToSet)
+{
+	if (!ensure(BarrelToSet && TurretToSet )) {UE_LOG(LogTemp, Warning, TEXT("Tank Aiming Comp missing params")); return; }
+	Barrel = BarrelToSet;
+	TurretCustomMesh = TurretToSet;
+	//ProjectileToShoot = ProjectileToSet;
+	UE_LOG(LogTemp, Warning, TEXT("INIT FINISHED"));
+}
+
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	
+	if (!ensure(Barrel && TurretCustomMesh)) { return; }
 	//work out difference between current barrel rotation and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
@@ -101,3 +100,20 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 }
 
+void UTankAimingComponent::FireTank()
+{
+	if (!ensure(Barrel)) return;
+	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
+	//auto Projectile = nullptr;
+
+	if (!bIsReloaded)return;
+	//auto ProjectileBluePrint = GetOwner()->FindComponentByClass<AProjectile>();
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileToShoot,
+		Barrel->GetSocketLocation("Projectile"), 
+		Barrel->GetSocketRotation("Projectile")
+	);
+//	TODO use launchspeed variable for this
+	Projectile->LaunchProjectile(10000.f);
+	LastFireTime = FPlatformTime::Seconds();
+}

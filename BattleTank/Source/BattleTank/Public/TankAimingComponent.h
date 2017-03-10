@@ -1,7 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
-
 
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
@@ -17,7 +15,7 @@ enum class EfiringStatus : uint8
 //forward declaration 
 class UTankBarrel; 
 class UTurretCustomMesh;
-
+class AProjectile;
 
 
 //Hold barral's properties 
@@ -30,26 +28,42 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-	void SetTurretReference(UTurretCustomMesh*);
-
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	void AimAT(FVector HitLocation, float LaunchSpeed);
+	void AimAT(FVector HitLocation);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void FireTank();
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+		void Initialise(UTankBarrel* Barrel, UTurretCustomMesh* Turret);
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "UI")
-		EfiringStatus FiringStatus = EfiringStatus::Reloading;
+		EfiringStatus FiringStatus = EfiringStatus::Locked;
 
 private:
 	UTankBarrel* Barrel = nullptr;
+
 	UTurretCustomMesh* TurretCustomMesh = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileToShoot;
+	
+
 	void MoveBarrelTowards(FVector AimDirection);
 
+	//TODO remove after refarctor 
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LanuchSpeed = 1000000.f; //TODO find sensible default
+	double LastFireTime = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float ReloadTimeSeconds = 3;
 	
 };

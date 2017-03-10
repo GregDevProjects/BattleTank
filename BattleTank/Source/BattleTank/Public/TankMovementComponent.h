@@ -28,7 +28,6 @@ class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
 
 
 	private:
-
 		UTankTrack* LeftTrack = nullptr;
 		UTankTrack* RightTrack = nullptr;
 		//Called from pathfinding method from ai controllers 
