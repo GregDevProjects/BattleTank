@@ -38,11 +38,13 @@ void ATankPlayerController_BP::BeginPlay()
 
 void ATankPlayerController_BP::AimTowardsCrosshair()
 {
+	if (!GetPawn()) return;
 	auto AimingComp = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComp)) return;
 
 	FVector HitLocation; //Out param
-
+	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
+	//UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation %i "), bGotHitLocation);
 	//Get world location if linetrace through crosshair 
 	if (GetSightRayHitLocation(HitLocation)) { //is going to ray trace 
 		// If it hits the landscape tell controlled tank to aim at this point
@@ -64,9 +66,8 @@ bool ATankPlayerController_BP::GetSightRayHitLocation(FVector& HitLocation) cons
 	FVector CameraWorldLocation, CameraWorldDirection;
 	if (GetLookDirection(ScreenLocation, CameraWorldDirection, CameraWorldLocation)) {
 		
-		if (GetLookVectorHitLocation(CameraWorldDirection, HitLocation)) {
-			return true;
-		}
+		return (GetLookVectorHitLocation(CameraWorldDirection, HitLocation));
+	
 	}
 	
 	//Line-trace along that look direction and see what we hit 

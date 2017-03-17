@@ -22,9 +22,9 @@ void ATankAiController::Tick(float DeltaSeconds)
 		AcceptanceRadius
 	);
 	//Aim towards player
-	auto aimingComp = ThisTank->FindComponentByClass<UTankAimingComponent>();
+	UTankAimingComponent* aimingComp = ThisTank->FindComponentByClass<UTankAimingComponent>();
 	aimingComp->AimAT(PlayerTank->GetActorLocation());
-		
+	if(aimingComp->GetFiringState() == EfiringStatus::Locked)
 	aimingComp->FireTank();
 	
 }

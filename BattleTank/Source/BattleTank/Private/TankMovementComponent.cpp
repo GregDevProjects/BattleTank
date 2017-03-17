@@ -7,16 +7,16 @@
 
 
 void UTankMovementComponent::IntendMoveForward(float Throw) {
-	if (!ensure(LeftTrack && RightTrack)) return;
-	LeftTrack->SetTrottle(Throw);
-	RightTrack->SetTrottle(Throw);
+	if (!ensure(LeftTrack && RightTrack)) { UE_LOG(LogTemp, Error, TEXT("NO TRACK")); return; }
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(Throw);
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw) {
 	if (!ensure(LeftTrack && RightTrack)) return;
 	//UE_LOG(LogTemp, Error, TEXT("Passed To Turn Right: %f"), Throw);
-	LeftTrack->SetTrottle(Throw);
-	RightTrack->SetTrottle(-Throw);
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(-Throw);
 }
 
 void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet) {

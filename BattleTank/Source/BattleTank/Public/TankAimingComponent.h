@@ -9,7 +9,8 @@ enum class EfiringStatus : uint8
 {
 	Locked,
 	Aiming,
-	Reloading
+	Reloading,
+	Empty
 };
 
 //forward declaration 
@@ -42,10 +43,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		void Initialise(UTankBarrel* Barrel, UTurretCustomMesh* Turret);
 
+	EfiringStatus GetFiringState() const;
+
+	int GetAmmo();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "UI")
-		EfiringStatus FiringStatus = EfiringStatus::Locked;
+		EfiringStatus FiringStatus = EfiringStatus::Reloading;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+		int Ammo = 3;
 
 private:
 	UTankBarrel* Barrel = nullptr;
@@ -65,5 +72,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float ReloadTimeSeconds = 3;
-	
+
+
+
+
+	FVector TankAimDirection;
+	bool IsBarrelMoving();
 };
